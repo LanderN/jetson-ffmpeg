@@ -112,7 +112,22 @@ static int nvmpi_init_decoder(AVCodecContext *avctx)
 		av_log(avctx, AV_LOG_ERROR, "Failed to nvmpi_create_decoder (code = %d).\n", AVERROR_EXTERNAL);
 		return AVERROR_EXTERNAL;
 	}
-	
+
+	// AVCodecContext extradata contains complete NALU with pps, just have to feed it to the decoder
+	if(avctx->extradata_size){
+		nvPacket packet;
+		int r;
+
+		packet.payload_size=avctx->extradata_size;
+		packet.payload=avctx->extradata;
+		packet.pts=0;
+
+		r = nvmpi_decoder_put_packet(nvmpi_context->ctx,&packet);
+		if (r < 0) {
+			av_log(avctx, AV_LOG_ERROR, "Failed to put pps packet (code = %d).\n", r);
+		}
+	}
+
    return 0;
 }
 
