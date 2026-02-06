@@ -589,8 +589,11 @@ nvmpictx* nvmpi_create_decoder(nvDecParam* param)
 	TEST_ERROR(ret < 0, "Error in decoder setFrameInputMode for NALU", ret);
 	
 	//TODO: create option to enable max performace mode (?)
-	//ret = ctx->dec->setMaxPerfMode(true);
-	//TEST_ERROR(ret < 0, "Error while setting decoder to max perf", ret);
+	ret = ctx->dec->setMaxPerfMode(true);
+	TEST_ERROR(ret < 0, "Error while setting decoder to max perf", ret);
+
+	ret = ctx->dec->disableDPB();
+	TEST_ERROR(ret < 0, "Error while disabling DPB", ret);
 
 	ret = ctx->dec->output_plane.setupPlane(V4L2_MEMORY_USERPTR, 10, false, true);
 	TEST_ERROR(ret < 0, "Error while setting up output plane", ret);
