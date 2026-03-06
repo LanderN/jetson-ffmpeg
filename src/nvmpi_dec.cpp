@@ -199,17 +199,21 @@ void nvmpictx::initDecoderCapturePlane(v4l2_format &format)
 
 void nvmpictx::deinitDecoderCapturePlane()
 {
+	if (numberCaptureBuffers == 0)
+		return;
+
 	int ret = 0;
 	dec->capture_plane.setStreamStatus(false);
 	dec->capture_plane.deinitPlane();
 	for (int index = 0; index < numberCaptureBuffers; index++) //V4L2_MEMORY_DMABUF
 	{
 		if (dmaBufferFileDescriptor[index] != 0)
-		{	
+		{
 			ret = NvBufferDestroy(dmaBufferFileDescriptor[index]);
 			TEST_ERROR(ret < 0, "Failed to Destroy NvBuffer", ret);
 		}
 	}
+	numberCaptureBuffers = 0;
 	return;
 }
 
@@ -352,11 +356,8 @@ void respondToResolutionEvent(v4l2_format &format, v4l2_crop &crop,nvmpictx* ctx
 	ctx->output_height = ctx->resized.height ? ctx->resized.height : crop.c.height;
 	
 	//init/reinit DecoderCapturePlane
-	if (ctx->numberCaptureBuffers > 0)
-	{
-		ctx->deinitDecoderCapturePlane();
-		ctx->deinitFramePool();
-	}
+	ctx->deinitDecoderCapturePlane();
+	ctx->deinitFramePool();
 	ctx->initDecoderCapturePlane(format);
 	
 	/* override default seesion. Without overriding session we wil
