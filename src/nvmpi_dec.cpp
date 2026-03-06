@@ -204,7 +204,7 @@ void nvmpictx::deinitDecoderCapturePlane()
 
 	int ret = 0;
 	dec->capture_plane.setStreamStatus(false);
-	dec->capture_plane.deinitPlane();
+	dec->capture_plane.reqbufs(V4L2_MEMORY_DMABUF, 0);
 	for (int index = 0; index < numberCaptureBuffers; index++) //V4L2_MEMORY_DMABUF
 	{
 		if (dmaBufferFileDescriptor[index] != 0)
