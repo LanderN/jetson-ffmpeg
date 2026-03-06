@@ -352,7 +352,11 @@ void respondToResolutionEvent(v4l2_format &format, v4l2_crop &crop,nvmpictx* ctx
 	ctx->output_height = ctx->resized.height ? ctx->resized.height : crop.c.height;
 	
 	//init/reinit DecoderCapturePlane
-	ctx->deinitDecoderCapturePlane();
+	if (ctx->numberCaptureBuffers > 0)
+	{
+		ctx->deinitDecoderCapturePlane();
+		ctx->deinitFramePool();
+	}
 	ctx->initDecoderCapturePlane(format);
 	
 	/* override default seesion. Without overriding session we wil
