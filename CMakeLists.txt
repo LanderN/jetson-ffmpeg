@@ -72,7 +72,7 @@ set(NVMPI_SRC
     ${JETSON_MULTIMEDIA_API_SRC_DIR}/NvElementProfiler.cpp
     ${JETSON_MULTIMEDIA_API_SRC_DIR}/NvLogging.cpp
     ${JETSON_MULTIMEDIA_API_SRC_DIR}/NvV4l2Element.cpp
-    ${JETSON_MULTIMEDIA_API_SRC_DIR}/NvV4l2ElementPlane.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/NvV4l2ElementPlane.cpp
     ${JETSON_MULTIMEDIA_API_SRC_DIR}/NvVideoDecoder.cpp
     ${JETSON_MULTIMEDIA_API_SRC_DIR}/NvVideoEncoder.cpp)
     
